@@ -46,6 +46,94 @@ def register_blueprints():
     app.register_blueprint(chat_bp, url_prefix='/api')
 
 register_blueprints()
+create_tables()
+def create_tables():
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                email VARCHAR(100) UNIQUE NOT NULL,
+                phone VARCHAR(15),
+                interests TEXT,
+                budget INT,
+                password_hash TEXT NOT NULL
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS trips (
+                trip_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                destination VARCHAR(100) NOT NULL,
+                start_date DATE,
+                end_date DATE,
+                FOREIGN KEY (user_id) REFERENCES users(user_id)
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS hotels (
+                hotel_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                location VARCHAR(100) NOT NULL,
+                price INT NOT NULL,
+                rating FLOAT
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS food (
+                food_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                type VARCHAR(50),
+                price INT NOT NULL,
+                available_in_location VARCHAR(100) NOT NULL
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS adventures (
+                adventure_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                type VARCHAR(50),
+                cost INT NOT NULL,
+                location VARCHAR(100) NOT NULL
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS bookings (
+                booking_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                trip_id INT,
+                service_type ENUM('hotel', 'food', 'adventure') NOT NULL,
+                service_id INT NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(user_id),
+                FOREIGN KEY (trip_id) REFERENCES trips(trip_id)
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS chats (
+                chat_id INT AUTO_INCREMENT PRIMARY KEY,
+                sender_id INT,
+                receiver_id INT,
+                message TEXT NOT NULL,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (sender_id) REFERENCES users(user_id),
+                FOREIGN KEY (receiver_id) REFERENCES users(user_id)
+            )
+        """)
+        
+        conn.commit()
+        print("✅ All tables ensured.")
+    except Exception as e:
+        print("❌ Error creating tables:", e)
+    finally:
+        cursor.close()
 
 # Home Route
 @app.route('/')
