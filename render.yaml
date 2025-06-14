@@ -6,12 +6,12 @@ services:
     startCommand: "python app.py"
     envVars:
       - key: MYSQL_HOST
-        value: your-mysql-host
+        value: mysql-1234.railway.internal
       - key: MYSQL_USER
-        value: your-mysql-username
+        value: root
       - key: MYSQL_PASSWORD
-        value: your-mysql-password
+        value: Abcd1234
       - key: MYSQL_DB
-        value: your-database-name
+        value: travelmate
       - key: JWT_SECRET_KEY
-        value: your-secret-key
+        value: 3306
