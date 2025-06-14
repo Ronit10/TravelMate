@@ -3,7 +3,7 @@ services:
     name: travelmate-flask
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python app.py"
+    startCommand: "gunicorn travelmate.app:app"
     envVars:
       - key: MYSQL_HOST
         value: your-mysql-host
