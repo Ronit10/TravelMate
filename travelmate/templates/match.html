@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile">
+                <img src="https://i.pravatar.cc/100" alt="User">
+                <h2>John Doe</h2>
+                <p>🌍 Loves backpacking & adventure</p>
+            </div>
+            <div class="filters">
+                <h3>Filters</h3>
+                <select><option>Budget</option><option>Luxury</option><option>Backpacking</option></select>
+                <select><option>Gender</option><option>Male</option><option>Female</option><option>Any</option></select>
+                <select><option>Interests</option><option>Hiking</option><option>Food & Culture</option><option>Beach</option></select>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <h2>Matching Travelers</h2>
+            <div id="travelers-list" class="grid"></div>
+            
+            <button id="toggle-chat">Open Community Chat</button>
+            
+            <!-- Chat Box -->
+            <div id="chat-box" class="hidden">
+                <h3>Community Chat</h3>
+                <div id="messages"></div>
+                <input type="text" id="chat-input" placeholder="Type a message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const travelersList = document.getElementById("travelers-list");
+            const chatBox = document.getElementById("chat-box");
+            const toggleChatBtn = document.getElementById("toggle-chat");
+            const messagesDiv = document.getElementById("messages");
+            const chatInput = document.getElementById("chat-input");
+            let messages = [];
+
+            // Backend se travelers fetch karna
+            fetch("/api/itineraries")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(trip => {
+                        const card = document.createElement("div");
+                        card.className = "traveler-card";
+                        card.innerHTML = `<p><strong>${trip.itinerary.join(" → ")}</strong></p>
+                                         <p>📅 ${trip.startDate} → ${trip.endDate} (${trip.days} days)</p>`;
+                        travelersList.appendChild(card);
+                    });
+                })
+                .catch(error => console.error("Error fetching travelers:", error));
+
+            // Community chat toggle
+            toggleChatBtn.addEventListener("click", function() {
+                chatBox.classList.toggle("hidden");
+                toggleChatBtn.textContent = chatBox.classList.contains("hidden") ? "Open Community Chat" : "Close Community Chat";
+            });
+
+            // Send Message function
+            window.sendMessage = function() {
+                const messageText = chatInput.value.trim();
+                if (messageText !== "") {
+                    messages.push({ text: messageText, sender: "You" });
+                    chatInput.value = "";
+                    renderMessages();
+                }
+            };
+
+            function renderMessages() {
+                messagesDiv.innerHTML = "";
+                messages.forEach(msg => {
+                    const msgDiv = document.createElement("div");
+                    msgDiv.className = "message";
+                    msgDiv.innerHTML = `<strong>${msg.sender}:</strong> ${msg.text}`;
+                    messagesDiv.appendChild(msgDiv);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

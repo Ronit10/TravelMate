@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TravelMate | Plan Your Perfect Trip</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background: #f5f7fa;
+      color: #333;
+    }
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10;
+      color: white;
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    nav a {
+      margin-left: 1.5rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #d1d5db;
+    }
+    .hero {
+      position: relative;
+      height: 60vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      filter: brightness(60%);
+      z-index: 1;
+    }
+    .overlay-text {
+      position: relative;
+      z-index: 2;
+      color: white;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    .overlay-text h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .overlay-text p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: auto;
+    }
+    .section {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .section h3 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 0.7rem;
+      margin-bottom: 1rem;
+    }
+    .card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: #666;
+    }
+    footer {
+      background: #111827;
+      color: white;
+      text-align: center;
+      padding: 1.5rem 0;
+      margin-top: 2rem;
+    }
+    form input,
+    form select {
+      padding: 0.7rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
+    }
+    form button {
+      padding: 0.7rem 1.5rem;
+      background: #3b82f6;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TravelMate</h1>
+    <nav>
+      <a href="#hotels">Hotels</a>
+      <a href="#food">Food</a>
+      <a href="#adventures">Adventures</a>
+      <a href="login">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <img src="{{ url_for('static', filename='images/homebg.jpg') }}" alt="Travel Banner" class="hero-image" />
+    <div class="overlay-text">
+      <h2>FIND YOUR PERFECT TRAVEL BUDDY</h2>
+      <p>Connect with like-minded travelers for your next adventure.</p>    
+      <form id="travelForm" method="GET" style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+        <select id="actionSelect" required style="width: 180px;">
+          <option value="">Choose Action</option>
+          <option value="buddies">Find Buddies</option>
+          <option value="cost">Cost Estimate</option>
+        </select>
+        <input type="text" name="location" placeholder="Where to?" required style="width: 200px;">
+        <input type="date" name="start_date" required style="width: 180px;">
+        <input type="date" name="end_date" required style="width: 180px;">
+        <input type="number" name="travelers" min="1" placeholder="Travelers" style="width: 130px;">
+        <button type="submit">Go</button>
+      </form>
+    </div>
+  </section>
+  
+  <section class="section" id="hotels">
+    <h3>Top Hotels</h3>
+    <div class="cards">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/goa_resort.jpg') }}" alt="Goa Beach Resort">
+        <h4>Goa Beach Resort</h4>
+        <p>Located near Baga Beach, 5-star luxury with sea view.</p>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/jaipur_palace.jpg') }}" alt="Jaipur Palace Inn">
+        <h4>Jaipur Palace Inn</h4>
+        <p>Authentic Rajasthani hospitality and heritage style rooms.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="food">
+    <h3>Local Food Specials</h3>
+    <div class="cards">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/goan_fish.jpg') }}" alt="Goan Fish Curry">
+        <h4>Goan Fish Curry</h4>
+        <p>A tangy, spicy delicacy made from fresh catch.</p>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/rajasthani_thali.jpg') }}" alt="Rajasthani Thali">
+        <h4>Rajasthani Thali</h4>
+        <p>A royal feast with dal baati churma and more.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="adventures">
+    <h3>Adventure Awaits</h3>
+    <div class="cards">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/scuba_diving.jpg') }}" alt="Scuba Diving">
+        <h4>Scuba Diving</h4>
+        <p>Explore coral reefs in Goa with trained experts.</p>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/desert_safari.jpg') }}" alt="Desert Safari">
+        <h4>Desert Safari</h4>
+        <p>Dune bashing and camel rides in Jaisalmer.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; Ronit Gupta       Ronitgupta</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById("travelForm");
+    const actionSelect = document.getElementById("actionSelect");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const selectedAction = actionSelect.value;
+    
+      if (!selectedAction) {
+        alert("Please select an action.");
+        return;
+      }
+    
+      const formData = new FormData(form);
+      formData.append("action", selectedAction);
+    
+      const queryString = new URLSearchParams(formData).toString();
+      window.location.href = `/search?${queryString}`;
+    });
+  </script>
+</body>
+</html>

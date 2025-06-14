@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plan My Trip</title>
+  <style>
+    body { font-family: 'Segoe UI'; padding: 2rem; background: #f4f6f8; }
+    input, button { padding: 0.8rem; width: 100%; margin-bottom: 1rem; }
+    .result { background: #fff; padding: 1rem; border-radius: 1rem; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h2>Estimate Your Trip Cost</h2>
+  <input type="text" id="location" placeholder="Enter Location" />
+  <button onclick="estimateCost()">Estimate</button>
+
+  <div class="result" id="cost-result"></div>
+
+  <script>
+    async function estimateCost() {
+      const location = document.getElementById("location").value;
+      const res = await fetch(`/cost/estimate?location=${location}`);
+      const data = await res.json();
+
+      document.getElementById("cost-result").innerHTML = `
+        <p><strong>Hotel:</strong> ₹${data.hotel}</p>
+        <p><strong>Food:</strong> ₹${data.food}</p>
+        <p><strong>Adventure:</strong> ₹${data.adventure}</p>
+        <hr />
+        <p><strong>Total:</strong> ₹${data.total}</p>
+      `;
+    }
+  </script>
+</body>
+</html>

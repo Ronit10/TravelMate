@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat with Traveler</title>
+  <style>
+    body { font-family: 'Segoe UI'; background: #eef2f7; padding: 2rem; }
+    #chat-box { height: 300px; overflow-y: scroll; background: #fff; padding: 1rem; border-radius: 1rem; box-shadow: 0 0 8px rgba(0,0,0,0.1); margin-bottom: 1rem; }
+    #message { width: 80%; padding: 0.8rem; }
+    button { padding: 0.8rem; }
+  </style>
+</head>
+<body>
+  <h2>Chat with Traveler</h2>
+  <div id="chat-box"></div>
+  <input type="text" id="message" placeholder="Type a message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    function sendMessage() {
+      const msg = document.getElementById("message").value;
+      const box = document.getElementById("chat-box");
+      box.innerHTML += `<p><strong>You:</strong> ${msg}</p>`;
+      document.getElementById("message").value = "";
+      box.scrollTop = box.scrollHeight;
+    }
+  </script>
+</body>
+</html>

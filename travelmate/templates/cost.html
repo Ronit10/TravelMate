@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Trips</title>
+</head>
+<body>
+    <h2>Available Trips</h2>
+    <ul>
+        {% for trip in trips %}
+        <li>{{ trip.destination }} - {{ trip.date }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

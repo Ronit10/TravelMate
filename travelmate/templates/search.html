@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Find Travel Buddies</title>
+  <style>
+    body { font-family: 'Segoe UI'; padding: 2rem; background: #f9f9f9; }
+    input, button { margin-bottom: 1rem; padding: 0.8rem; width: 100%; }
+    .card {
+      background: white; padding: 1rem; margin-top: 1rem;
+      border-radius: 1rem; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .chat-btn { background: #28a745; color: white; padding: 0.5rem; border: none; border-radius: 0.5rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Find Travel Buddies</h2>
+  <input type="text" id="location" placeholder="Enter Location" />
+  <input type="date" id="date" />
+  <button onclick="searchTravelers()">Search</button>
+  <div id="results"></div>
+
+  <script>
+    async function searchTravelers() {
+      const location = document.getElementById("location").value;
+      const date = document.getElementById("date").value;
+      const res = await fetch(`/match/travelers?location=${location}&date=${date}`);
+      const data = await res.json();
+
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      if (data.length === 0) {
+        resultsDiv.innerHTML = "<p>No travelers found.</p>";
+        return;
+      }
+
+      data.forEach((traveler, index) => {
+        resultsDiv.innerHTML += `
+          <div class="card">
+            <p><strong>Name:</strong> ${traveler.name}</p>
+            <p><strong>Email:</strong> ${traveler.email}</p>
+            <p><strong>Interests:</strong> ${traveler.interests}</p>
+            <button class="chat-btn" onclick="window.location.href='chat.html?user=${index}'">Chat</button>
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Signup</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    input, button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+    .toggle-btns {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .toggle-btns button {
+      width: 49%;
+    }
+    .hidden {
+      display: none;
+    }
+    .msg {
+      text-align: center;
+      font-weight: bold;
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toggle-btns">
+      <button onclick="showForm('login')">Login</button>
+      <button onclick="showForm('signup')">Signup</button>
+    </div>
+
+    <!-- ✅ LOGIN FORM -->
+    <form id="login-form">
+      <h2>Login</h2>
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- ✅ SIGNUP FORM -->
+    <form id="signup-form" class="hidden">
+      <h2>Signup</h2>
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="text" name="phone" placeholder="Phone" required />
+      <input type="text" name="interests" placeholder="Interests (comma separated)" />
+      <input type="number" name="budget" placeholder="Budget" />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Signup</button>
+    </form>
+
+    <p class="msg" id="msg"></p>
+  </div>
+
+  <script>
+    function showForm(formType) {
+      document.getElementById("login-form").classList.toggle("hidden", formType !== 'login');
+      document.getElementById("signup-form").classList.toggle("hidden", formType !== 'signup');
+      document.getElementById("msg").textContent = '';
+    }
+
+    document.getElementById("login-form").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const res = await fetch("/login", { method: "POST", body: formData });
+        const data = await res.json();
+        
+        if (data.success) {
+          document.getElementById("msg").textContent = "✅ Login Successful! Redirecting...";
+          document.getElementById("msg").className = "msg";
+      
+          // redirect after 1.5 seconds
+          setTimeout(() => {
+            window.location.href = "/";  // <- yaha apna home page route daal
+          }, 1500);
+      
+        } else {
+          document.getElementById("msg").textContent = "❌ Invalid Credentials";
+          document.getElementById("msg").className = "msg error";
+        }
+      });
+      
+
+    document.getElementById("signup-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const res = await fetch("/signup", { method: "POST", body: formData });
+      const data = await res.json();
+      document.getElementById("msg").textContent = data.success ? "🎉 Signup Successful! Please login." : data.message;
+      document.getElementById("msg").className = data.success ? "msg" : "msg error";
+    });
+  </script>
+</body>
+</html>
