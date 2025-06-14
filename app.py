@@ -10,6 +10,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from routes.chat_routes import chat_bp
 from routes.matching_routes import matching_bp
 from routes.cost_routes import cost_bp
+import pymysql
+pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 CORS(app)
