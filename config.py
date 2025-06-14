@@ -1,10 +1,10 @@
 import os
 
-MYSQL_HOST = "localhost"
+MYSQL_HOST = "mysql-1234.railway.internal"
 MYSQL_USER = "root"
-MYSQL_PASSWORD = "ronit@2004"
-MYSQL_DB = "travelmatch"
-JWT_SECRET_KEY = "sanya27" 
+MYSQL_PASSWORD = "Abcd1234"
+MYSQL_DB = "travelmate"
+JWT_SECRET_KEY = "3306" 
 from flask_mysqldb import MySQL
 
 mysql = MySQL()
