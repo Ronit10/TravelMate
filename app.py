@@ -131,7 +131,6 @@ def register_blueprints():
     app.register_blueprint(chat_bp, url_prefix='/api')
 
 register_blueprints()
-create_tables()
 
 @app.route('/')
 def home():
@@ -244,4 +243,7 @@ def signup():
         conn.close()
 
 if __name__ == "__main__":
+    with app.app_context():
+        create_tables()
     app.run(debug=True)
+
