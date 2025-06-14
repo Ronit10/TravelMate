@@ -2,5 +2,5 @@ Flask==3.1.1
 flask-cors==6.0.1
 Flask-JWT-Extended==4.7.1
 Flask-MySQLdb==2.0.0
-mysqlclient==2.2.7
+PyMySQL==2.2.7
 gunicorn==21.2.0
